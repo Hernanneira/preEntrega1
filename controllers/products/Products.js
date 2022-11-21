@@ -14,7 +14,7 @@ class Products {
     }
     async getById(id){
         try {
-            const content = JSON.parse(await fs.readFile(this.route,'utf-8'))
+            const content = JSON.parse(fs.readFile(this.route,'utf-8'))
             const elementosFiltrados = content.filter(e => e.id === (parseInt(id)))
             if(elementosFiltrados.length === 0){
                 return({ error : 'producto no encontrado' })
@@ -22,8 +22,7 @@ class Products {
                 return(elementosFiltrados)
             }
         } catch (error) {
-            res.send(error)
-            null
+            return({error})
         }
     }
 
