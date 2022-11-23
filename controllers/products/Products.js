@@ -1,4 +1,5 @@
 const {promises: fs} = require ('fs')
+const { emitKeypressEvents } = require('readline')
 
 class Products {
     constructor() {
@@ -14,7 +15,7 @@ class Products {
     }
     async getById(id){
         try {
-            const content = JSON.parse(fs.readFile(this.route,'utf-8'))
+            const content =  JSON.parse(await fs.readFile(this.route,'utf-8'))
             const elementosFiltrados = content.filter(e => e.id === (parseInt(id)))
             if(elementosFiltrados.length === 0){
                 return({ error : 'producto no encontrado' })
@@ -56,7 +57,7 @@ class Products {
 
     async update(timestamp, nombre, descripcion, código, foto, precio, stock, id) {
         try{
-            const content = JSON.parse(await fs.readFile(this.route,'utf-8'))
+            const content = await JSON.parse(await fs.readFile(this.route,'utf-8'))
             let identificacion = Number(id)
             let index = content.findIndex(prod => prod.id === identificacion)
             const newProduct = {timestamp, nombre, descripcion, código, foto, precio, stock, "id": identificacion};
@@ -84,7 +85,7 @@ class Products {
     }
     async deleteById (id) {
         try {
-            const content = JSON.parse(await fs.readFile(this.route,'utf-8'))
+            const content = await JSON.parse(await fs.readFile(this.route,'utf-8'))
             const elementosFiltrados = content.filter(e => e.id !== parseInt(id))
             if(elementosFiltrados.length === (content.length)){
                 return({ error : 'producto no encontrado' })
